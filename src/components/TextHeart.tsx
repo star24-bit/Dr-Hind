@@ -80,8 +80,10 @@ export default function TextHeart() {
         if (elapsed > p.delay) {
             p.alpha += (p.targetAlpha - p.alpha) * 0.02;
         }
+ctx.shadowColor = "#ffffff";
+ctx.shadowBlur = 25;
 
-        ctx.fillStyle = `rgba(0, 170, 255, ${p.alpha})`;
+        ctx.fillStyle = `rgba(255, 255, 255, ${p.alpha})`;
         ctx.fillText(text, p.x - ctx.measureText(text).width / 2, p.y);
       });
 

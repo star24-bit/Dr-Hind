@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Terminal, Lock, Heart as HeartIcon, Sparkles } from 'lucide-react';
+import { Lock } from 'lucide-react';
 import TextHeart from './components/TextHeart';
 
 const Typewriter = ({ text, delay = 50, onComplete }: { text: string, delay?: number, onComplete?: () => void }) => {
@@ -25,6 +25,7 @@ const Typewriter = ({ text, delay = 50, onComplete }: { text: string, delay?: nu
 export default function App() {
   const [stage, setStage] = useState<'console' | 'reveal'>('console');
   const [consoleFinished, setConsoleFinished] = useState(false);
+  const audioRef = useRef<HTMLAudioElement>(null);
 
   const handleReveal = useCallback(() => {
     if (stage === 'console' && consoleFinished) {
@@ -33,6 +34,10 @@ export default function App() {
   }, [stage, consoleFinished]);
 
   return (
+    <>
+ <audio ref={audioRef}>
+  <source src="/hind.mp3" type="audio/mpeg" />
+</audio>
     <div 
       onClick={handleReveal}
       className={`relative min-h-screen w-full flex items-center justify-center bg-[#050505] selection:bg-pink-deep/30 ${stage === 'console' && consoleFinished ? 'cursor-pointer' : ''}`}
@@ -52,7 +57,7 @@ export default function App() {
               <div className="flex gap-2 text-pink-soft/60">
                 <span>[system]</span>
                 <Typewriter 
-                  text="Initializing heart.PROTOCOL_v2.0..." 
+                  text="A special message for Hind..." 
                   delay={30} 
                   onComplete={() => setConsoleFinished(true)}
                 />
@@ -78,21 +83,33 @@ export default function App() {
                   className="pt-8 flex flex-col items-start gap-6"
                 >
                   <p className="text-white/40 italic">
-                    {">"} One encrypted package found for you.
+                    {">"} Your laugh is my favorite sound in the world.
+
                   </p>
                   
                   <button
-                    id="decrypt-button"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setStage('reveal');
-                    }}
-                    className="group flex items-center gap-3 px-6 py-3 border border-pink-deep/30 bg-pink-deep/5 hover:bg-pink-deep/10 text-pink-soft transition-all duration-300 pointer-events-auto"
-                  >
-                    <Lock size={16} className="group-hover:rotate-12 transition-transform" />
-                    <span className="font-mono tracking-widest uppercase text-xs">Decrypt Message</span>
-                    <span className="terminal-cursor" />
-                  </button>
+  id="decrypt-button"
+  onClick={(e) => {
+    e.stopPropagation();
+
+    audioRef.current?.play();
+
+    setTimeout(() => {
+      audioRef.current?.pause();
+
+      if (audioRef.current) {
+        audioRef.current.currentTime = 0;
+      }
+    }, 30000);
+
+    setStage('reveal');
+  }}
+  className="group flex items-center gap-3 px-6 py-3 border border-pink-deep/30 bg-pink-deep/5 hover:bg-pink-deep/10 text-pink-soft transition-all duration-300 pointer-events-auto"
+>
+  <Lock size={16} className="group-hover:rotate-12 transition-transform" />
+  <span className="font-mono tracking-widest uppercase text-xs">Decrypt Message</span>
+  <span className="terminal-cursor" />
+</button>
                   
                   <p className="text-[10px] text-white/20 animate-pulse">
                     (or just click anywhere)
@@ -119,9 +136,9 @@ export default function App() {
               <h2
   className="font-mono text-5xl md:text-7xl tracking-[0.3em] uppercase mb-2"
   style={{
-    color: "#ffffff",
+    color: "#081F5C",
     textShadow:
-      "0 0 10px #ffffff, 0 0 20px #ffffff, 0 0 40px #ffffff, 0 0 80px #ffffff"
+  "0 0 10px #081F5C, 0 0 20px #081F5C, 0 0 40px #0A2472, 0 0 80px #0A2472"
   }}
 >
   Hind
@@ -130,9 +147,20 @@ export default function App() {
               
               <motion.button
                 onClick={(e) => {
-                  e.stopPropagation();
-                  setStage('console');
-                }}
+  e.stopPropagation();
+
+  audioRef.current?.play();
+
+  setTimeout(() => {
+    audioRef.current?.pause();
+
+    if (audioRef.current) {
+      audioRef.current.currentTime = 0;
+    }
+  }, 30000);
+
+  setStage('reveal');
+}}
                 className="text-white/20 hover:text-white/60 transition-colors uppercase text-[10px] tracking-widest font-mono"
               >
                 Re-encrypt
@@ -153,5 +181,6 @@ export default function App() {
         )}
       </AnimatePresence>
     </div>
+    </>
   );
 }
