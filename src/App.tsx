@@ -36,7 +36,7 @@ export default function App() {
   return (
     <>
  <audio ref={audioRef}>
-  <source src="/hind.mp3" type="audio/mpeg" />
+  <source src="/Dr-Hind/hind.mp3" type="audio/mpeg" />
 </audio>
     <div 
       onClick={handleReveal}
